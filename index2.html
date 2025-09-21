@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logo Loop Demo</title>
+  <style>
+    /* Paste your CSS here */
+    .logoloop {
+      position: relative;
+      overflow-x: hidden;
+
+      --logoloop-gap: 32px;
+      --logoloop-logoHeight: 28px;
+      --logoloop-fadeColorAuto: #ffffff;
+    }
+
+    .logoloop--scale-hover {
+      padding-top: calc(var(--logoloop-logoHeight) * 0.1);
+      padding-bottom: calc(var(--logoloop-logoHeight) * 0.1);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .logoloop {
+        --logoloop-fadeColorAuto: #0b0b0b;
+      }
+    }
+
+    .logoloop__track {
+      display: flex;
+      width: max-content;
+      will-change: transform;
+      user-select: none;
+    }
+
+    .logoloop__list {
+      display: flex;
+      align-items: center;
+    }
+
+    .logoloop__item {
+      flex: 0 0 auto;
+      margin-right: var(--logoloop-gap);
+      font-size: var(--logoloop-logoHeight);
+      line-height: 1;
+    }
+
+    .logoloop__item:last-child {
+      margin-right: var(--logoloop-gap);
+    }
+
+    .logoloop__node {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .logoloop__item img {
+      height: var(--logoloop-logoHeight);
+      width: auto;
+      display: block;
+      object-fit: contain;
+      image-rendering: -webkit-optimize-contrast;
+      -webkit-user-drag: none;
+      pointer-events: none;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .logoloop--scale-hover .logoloop__item:hover img,
+    .logoloop--scale-hover .logoloop__item:hover .logoloop__node {
+      transform: scale(1.2);
+      transform-origin: center center;
+    }
+
+    .logoloop__link {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: opacity 0.2s ease;
+    }
+
+    .logoloop__link:hover {
+      opacity: 0.8;
+    }
+
+    .logoloop--fade::before,
+    .logoloop--fade::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: clamp(24px, 8%, 120px);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .logoloop--fade::before {
+      left: 0;
+      background: linear-gradient(
+        to right,
+        var(--logoloop-fadeColor, var(--logoloop-fadeColorAuto)) 0%,
+        rgba(0, 0, 0, 0) 100%
+      );
+    }
+
+    .logoloop--fade::after {
+      right: 0;
+      background: linear-gradient(
+        to left,
+        var(--logoloop-fadeColor, var(--logoloop-fadeColorAuto)) 0%,
+        rgba(0, 0, 0, 0) 100%
+      );
+    }
+  </style>
+</head>
+<body style="background: #060010; display:flex; justify-content:center; align-items:center; height:100vh;">
+
+  <div class="logoloop logoloop--fade logoloop--scale-hover">
+    <div class="logoloop__track" id="logoTrack">
+      <div class="logoloop__item"><a href="#" class="logoloop__link"><img src="https://via.placeholder.com/100x28?text=Logo1" alt="Logo 1"></a></div>
+      <div class="logoloop__item"><a href="#" class="logoloop__link"><img src="https://via.placeholder.com/100x28?text=Logo2" alt="Logo 2"></a></div>
+      <div class="logoloop__item"><a href="#" class="logoloop__link"><img src="https://via.placeholder.com/100x28?text=Logo3" alt="Logo 3"></a></div>
+      <div class="logoloop__item"><a href="#" class="logoloop__link"><img src="https://via.placeholder.com/100x28?text=Logo4" alt="Logo 4"></a></div>
+      <div class="logoloop__item"><a href="#" class="logoloop__link"><img src="https://via.placeholder.com/100x28?text=Logo5" alt="Logo 5"></a></div>
+
+      <!-- repeat logos for seamless loop -->
+      <div class="logoloop__item"><a href="#" class="logoloop__link"><img src="https://via.placeholder.com/100x28?text=Logo1" alt="Logo 1"></a></div>
+      <div class="logoloop__item"><a href="#" class="logoloop__link"><img src="https://via.placeholder.com/100x28?text=Logo2" alt="Logo 2"></a></div>
+      <div class="logoloop__item"><a href="#" class="logoloop__link"><img src="https://via.placeholder.com/100x28?text=Logo3" alt="Logo 3"></a></div>
+      <div class="logoloop__item"><a href="#" class="logoloop__link"><img src="https://via.placeholder.com/100x28?text=Logo4" alt="Logo 4"></a></div>
+      <div class="logoloop__item"><a href="#" class="logoloop__link"><img src="https://via.placeholder.com/100x28?text=Logo5" alt="Logo 5"></a></div>
+    </div>
+  </div>
+
+  <script>
+    // Simple horizontal logo loop animation
+    const track = document.getElementById('logoTrack');
+    let x = 0;
+    const speed = 0.5; // px per frame
+
+    function animateLoop() {
+      x -= speed;
+      if (Math.abs(x) >= track.scrollWidth / 2) {
+        x = 0;
+      }
+      track.style.transform = `translateX(${x}px)`;
+      requestAnimationFrame(animateLoop);
+    }
+
+    animateLoop();
+  </script>
+
+</body>
+</html>
