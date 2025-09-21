@@ -3,13 +3,95 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gradient Text Test</title>
-  <link rel="stylesheet" href="gradient.css"> <!-- update if your CSS file has a different name -->
+  <title>Electric Border Demo</title>
+  <style>
+    /* Paste your ElectricBorder CSS here */
+    .electric-border {
+      --electric-border-color: #5227FF;
+      --eb-border-width: 2px;
+      position: relative;
+      border-radius: 12px;
+      overflow: visible;
+      isolation: isolate;
+      padding: 1rem 2rem;
+      display: inline-block;
+      cursor: pointer;
+      margin: 3rem;
+    }
+
+    .eb-content {
+      position: relative;
+      z-index: 1;
+      font-size: 2rem;
+      color: white;
+      text-align: center;
+    }
+
+    .eb-layers {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .eb-stroke,
+    .eb-glow-1,
+    .eb-glow-2,
+    .eb-background-glow {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      box-sizing: border-box;
+    }
+
+    .eb-stroke {
+      border: var(--eb-border-width) solid var(--electric-border-color);
+    }
+
+    .eb-glow-1 {
+      border: var(--eb-border-width) solid rgba(82,39,255,0.6);
+      filter: blur(1px);
+      opacity: 0.5;
+    }
+
+    .eb-glow-2 {
+      border: var(--eb-border-width) solid #8a5cff;
+      filter: blur(2px);
+      opacity: 0.5;
+    }
+
+    .eb-background-glow {
+      z-index: -1;
+      transform: scale(1.08);
+      filter: blur(32px);
+      opacity: 0.3;
+      background: linear-gradient(-30deg, #8a5cff, transparent, #5227FF);
+    }
+  </style>
 </head>
-<body>
-  <div class="animated-gradient-text">
-    <div class="animated-gradient-text"></div>
-    <span class="text-content">Hello World</span>
+<body style="background: #060010; display:flex; justify-content:center; align-items:center; height:100vh;">
+  <div class="electric-border" id="electric">
+    <div class="eb-layers">
+      <div class="eb-stroke"></div>
+      <div class="eb-glow-1"></div>
+      <div class="eb-glow-2"></div>
+      <div class="eb-background-glow"></div>
+    </div>
+    <div class="eb-content">Hello World</div>
   </div>
+
+  <script>
+    // Simple animation mimic (horizontal and vertical glow movement)
+    const eb = document.getElementById('electric');
+    let offset = 0;
+    setInterval(() => {
+      offset += 1;
+      eb.querySelector('.eb-glow-1').style.transform = `translate(${offset}px, ${offset}px)`;
+      eb.querySelector('.eb-glow-2').style.transform = `translate(${-offset}px, ${-offset}px)`;
+      if (offset > 20) offset = -20;
+    }, 50);
+  </script>
 </body>
 </html>
